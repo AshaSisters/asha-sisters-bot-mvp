@@ -2,7 +2,7 @@ import os
 from datetime import datetime
 from flask import Flask, request
 from twilio.twiml.messaging_response import MessagingResponse
-from languages import translate
+from utils.languages import translate  # Corrected import for languages.py
 from airtable_logger import log_to_airtable  # ✅ This is fine as long as there's no circular import
 
 # Import module handlers
