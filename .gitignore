@@ -1,0 +1,15 @@
+echo "# Python
+__pycache__/
+*.py[cod]
+
+# Environment
+.env
+
+# System
+.DS_Store
+
+# Logs
+*.log
+
+# Virtual Environment
+venv/" > .gitignore
