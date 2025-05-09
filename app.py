@@ -2,8 +2,12 @@ import os
 from datetime import datetime
 from flask import Flask, request
 from twilio.twiml.messaging_response import MessagingResponse
-from utils.languages import languages
+from utils.languages import translate  # Updated import
 from utils.airtable_logger import log_to_airtable
+
+app = Flask(__name__)
+
+# Rest of your original code remains exactly the same...
 
 # Module handlers
 from modules.maternal_health import handle_maternal_flow
