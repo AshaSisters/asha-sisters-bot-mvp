@@ -3,7 +3,7 @@ from datetime import datetime
 from flask import Flask, request
 from twilio.twiml.messaging_response import MessagingResponse
 from utils.languages import translate
-from airtable_logger import log_to_airtable
+from utils.airtable_logger import log_to_airtable
 
 # Module handlers
 from modules.maternal_health import handle_maternal_flow
