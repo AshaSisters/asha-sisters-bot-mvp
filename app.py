@@ -2,14 +2,14 @@ import os
 from datetime import datetime
 from flask import Flask, request
 from twilio.twiml.messaging_response import MessagingResponse
-from utils.languages import translate  # Corrected import for languages.py
-from airtable_logger import log_to_airtable  # ✅ This is fine as long as there's no circular import
+from utils.languages import translate
+from airtable_logger import log_to_airtable
 
-# Import module handlers
-from modules.maternal_health import handle_maternal_flow  # Correct import path for maternal health flow
-from modules.training import handle_training_flow  # Correct import path for training flow
-from modules.products import handle_product_flow  # Correct import path for product flow
-from modules.distributor import handle_distributor_flow  # Correct import path for distributor flow
+# Module handlers
+from modules.maternal_health import handle_maternal_flow
+from modules.training import handle_training_flow
+from modules.products import handle_product_flow
+from modules.distributor import handle_distributor_flow
 
 app = Flask(__name__)
 sessions = {}
@@ -22,8 +22,9 @@ def update_session(session_id, key, value):
 
 def handle_language_selection(user_input, session_id):
     lang_map = {'1': 'en', '2': 'sn', '3': 'nd'}
-    if user_input.strip() in lang_map:
-        lang = lang_map[user_input.strip()]
+    choice = user_input.strip()
+    if choice in lang_map:
+        lang = lang_map[choice]
         update_session(session_id, 'language', lang)
         return True, lang
     return False, None
@@ -40,7 +41,7 @@ def handle_gender_age(user_input, session_id, lang):
         try:
             age = int(user_input.strip())
             update_session(session_id, 'age', age)
-            if session['gender'] == 'male' and age > 35:
+            if session.get('gender') == 'male' and age > 35:
                 update_session(session_id, 'referring', True)
                 return translate("Please write a sister's name and contact details.", lang)
             elif age < 18:
@@ -70,7 +71,8 @@ def handle_main_menu(user_input, session_id, lang):
     choice = user_input.strip().lower()
     if choice in menu_map:
         update_session(session_id, 'current_module', choice)
-        return menu_map[choice](user_input, session_id, lang)
+        session = get_session(session_id)
+        return menu_map[choice](user_input, session, lang)
     else:
         return translate("Invalid choice. Please select 1-4.", lang)
 
@@ -169,8 +171,9 @@ def webhook():
             "Module": module
         })
 
-        if response.lower().endswith("thank you") or "menu" in response.lower():
+        if response.strip().lower().endswith("thank you") or "menu" in response.strip().lower():
             update_session(session_id, 'current_module', None)
+
         msg.body(response)
         return str(resp)
 
