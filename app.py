@@ -2,7 +2,7 @@ import os
 from datetime import datetime
 from flask import Flask, request
 from twilio.twiml.messaging_response import MessagingResponse
-from utils.languages import translate
+from utils.languages import langauages
 from utils.airtable_logger import log_to_airtable
 
 # Module handlers
