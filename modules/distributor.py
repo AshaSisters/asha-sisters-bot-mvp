@@ -1,8 +1,8 @@
 from datetime import datetime
 from flask import request
-from session import get_session, update_session
-from airtable_logger import log_to_airtable
-from languages import translate
+from utils.session import get_session, update_session
+from utils.airtable_logger import log_to_airtable
+from utils.languages import translate
 from sales import log_sale  # For sales tracking
 
 def handle_distributor_flow(user_input, session_id, lang):

@@ -1,5 +1,5 @@
-from translations import translate
-from airtable_logger import log_to_airtable
+from utils.languages import translate
+from utils.airtable_logger import log_to_airtable
 
 PREGNANCY_TIPS = {
     "english": [
