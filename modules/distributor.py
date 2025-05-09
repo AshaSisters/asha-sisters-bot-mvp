@@ -3,7 +3,6 @@ from flask import request
 from utils.session import get_session, update_session
 from utils.airtable_logger import log_to_airtable
 from utils.languages import translate
-from sales import log_sale  # For sales tracking
 
 def handle_distributor_flow(user_input, session_id, lang):
     session = get_session(session_id)
@@ -28,7 +27,6 @@ def handle_distributor_flow(user_input, session_id, lang):
     elif session["awaiting"] == "location":
         update_session(session_id, "distributor_location", user_input)
         update_session(session_id, "awaiting", "experience")
-        return translate("How many years of sales experience do you have?", lang)
 
     # Step 3: Capture experience
     elif session["awaiting"] == "experience":
@@ -104,7 +102,6 @@ def _finalize_distributor(session_id, lang, phone_number, is_referral=False):
     # Log to Airtable
     log_to_airtable("Distributors", record)
 
-    # Log sales opportunity
     log_sale(
         product="distribution_opportunity",
         quantity=1,
